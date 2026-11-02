@@ -1,0 +1,32 @@
+{
+    "name": "@usesequential/release-cli",
+    "version": "0.2.0",
+    "description": "Record a release in Sequential: its version, its merged pull requests and the findings they fix. CLI and GitHub Action.",
+    "keywords": [
+        "sequential",
+        "release",
+        "github-action",
+        "vercel",
+        "deployment"
+    ],
+    "homepage": "https://www.usesequential.com/docs",
+    "type": "commonjs",
+    "bin": {
+        "sequential-release": "bin/sequential-release.cjs"
+    },
+    "files": [
+        "bin",
+        "src",
+        "action.yml",
+        "README.md",
+        "LICENSE"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "dependencies": {},
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    }
+}
