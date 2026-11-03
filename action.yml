@@ -53,7 +53,7 @@ inputs:
     default: ${{ github.token }}
   token:
     description: >
-      A Sequential personal access token (sq_pat_…) with the releases:write scope, made for one project (the release
+      A Sequential project access token (sq_pat_…) with the releases:write scope, made for one project (the release
       goes to that project). Passed to the CLI as SEQUENTIAL_RELEASES_TOKEN. Pass this from a secret
       (e.g. ${{ secrets.SEQUENTIAL_RELEASES_TOKEN }}), never as a literal value.
     required: true

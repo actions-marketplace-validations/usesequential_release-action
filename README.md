@@ -13,7 +13,7 @@ You can use it in two ways:
 `@usesequential/node` also records a release, with `sequential releases record`, from any deploy step. This package adds
 what GitHub knows: the merged pull requests and the findings they close, read from the GitHub API, and the GitHub Action.
 
-**The token:** both read it from `SEQUENTIAL_RELEASES_TOKEN`: a personal access token (`sq_pat_…`) with the
+**The token:** both read it from `SEQUENTIAL_RELEASES_TOKEN`: a project access token (`sq_pat_…`) with the
 `releases:write` scope, made for one project. The release goes to that project. An organization-wide token and an agent
 connection cannot record a release.
 
@@ -153,7 +153,7 @@ You can also read the trailers from a local checkout with `range: v1.2.0..HEAD` 
 | Input | Required | What it does |
 |---|---|---|
 | `version` | yes | The release version, 1 to 64 printable ASCII characters. Use the same string as your browser SDK's release. |
-| `token` | yes | A personal access token (`sq_pat_…`) with the `releases:write` scope, made for one project. Always from a secret. |
+| `token` | yes | A project access token (`sq_pat_…`) with the `releases:write` scope, made for one project. Always from a secret. |
 | `api-url` | no | The Sequential API. Default: `https://api.usesequential.com` (Sequential's hosted API). Set it only for a self-hosted deployment; it must be `https://`. |
 | `sha` | with `github-changes` | The deployed commit. |
 | `environment` | no | The environment label in Sequential (lowercase, for example `production`). Default: the project's setting. |

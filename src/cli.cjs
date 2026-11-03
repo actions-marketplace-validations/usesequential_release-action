@@ -83,7 +83,7 @@ async function runRelease(argv, env, deps) {
 
     const token = env.SEQUENTIAL_RELEASES_TOKEN;
     if (!token) {
-        stderr.write('SEQUENTIAL_RELEASES_TOKEN is required: a personal access token (sq_pat_…) with the releases:write scope, made for one project.\n');
+        stderr.write('SEQUENTIAL_RELEASES_TOKEN is required: a project access token (sq_pat_…) with the releases:write scope, made for one project.\n');
         return 1;
     }
 
