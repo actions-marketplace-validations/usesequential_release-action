@@ -1,5 +1,5 @@
 name: 'Sequential release'
-description: 'Record a release in Sequential: its version, its merged pull requests and the findings they fix.'
+description: 'Record a release in Sequential: its version, its merged pull requests and the cases they fix.'
 branding:
   icon: 'tag'
   color: 'purple'
@@ -28,7 +28,7 @@ inputs:
     required: false
   github-changes:
     description: >
-      'true' to read the release's merged pull requests (as changes) and the findings they close from the GitHub API,
+      'true' to read the release's merged pull requests (as changes) and the cases they fix from the GitHub API,
       with no checkout. Needs `sha`, and the job permissions deployments: read, contents: read, pull-requests: read.
     required: false
     default: 'false'
@@ -41,7 +41,7 @@ inputs:
   project-key:
     description: >
       This Sequential project's key, for repositories that deploy several projects: only "Fixes <key>#F-12" (and
-      `Sequential-Finding: <key>#F-12`) name findings of this release. Unqualified "Fixes F-12" then counts only with
+      `Sequential-Finding: <key>#F-12`) name cases of this release. Unqualified "Fixes F-12" then counts only with
       findings: all.
     required: false
   findings:

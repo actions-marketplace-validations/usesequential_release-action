@@ -1,25 +1,32 @@
 # Sequential release (CLI and GitHub Action)
 
-`sequential-release` records a release in Sequential: its version, the pull requests it merged, and the findings it
-fixes. Sequential then compares the sessions before and after the release for each finding that the release names.
+`sequential-release` records a release in Sequential: its version, the pull requests it merged, and the cases it
+fixes. Sequential then compares the sessions before and after the release for each case that the release names.
 The release only records what changed. It does not say what caused a result.
 
 You can use it in two ways:
 
-- **GitHub Action:** `uses: usesequential/release-action@v0` (see [GitHub Actions](#github-actions)).
+- **GitHub Action:** `uses: usesequential/release-action@v0` (see [GitHub Actions on a tag push](#github-actions-on-a-tag-push)).
 - **CLI:** `npx @usesequential/release-cli --version <v> …`, the `sequential-release` command (Node.js 18 or later; no
   dependencies).
 
 `@usesequential/node` also records a release, with `sequential releases record`, from any deploy step. This package adds
-what GitHub knows: the merged pull requests and the findings they close, read from the GitHub API, and the GitHub Action.
+what GitHub knows: the merged pull requests and the cases that they fix, read from the GitHub API, and the GitHub Action.
 
 **The token:** both read it from `SEQUENTIAL_RELEASES_TOKEN`: a project access token (`sq_pat_…`) with the
-`releases:write` scope, made for one project. The release goes to that project. An organization-wide token and an agent
-connection cannot record a release.
+`releases:write` scope, made for one project. The release goes to that project. `POST /api/releases` accepts only a
+project access token as the bearer token. It refuses the token of an agent connection (for one project or for all
+projects of an organisation).
+
+**An agent connection can also record a release.** An agent that is connected through claude.ai or ChatGPT can record
+a release with the `record_release` tool when the person ticks "Also: it records releases" at connect. The box is
+ticked at first. ChatGPT Pro uses only the tools that read, so it cannot record a release. On a connection to all
+projects of an organisation that has more than one project, the agent names the project in each `record_release` call. See [Connect claude.ai](https://www.usesequential.com/docs/connect-claude-ai#the-consent-page)
+and [Connect ChatGPT](https://www.usesequential.com/docs/connect-chatgpt).
 
 ## The release version must match your SDK's release
 
-Sequential compares a finding before and after a release. To count a session as "after", Sequential reads the release
+Sequential compares a case before and after a release. To count a session as "after", Sequential reads the release
 that the session's browser events carry (the browser SDK's `release` option, `data-release` on the script tag, or
 `$release` that the page registers). The backend SDK's release is not used. Each such session must carry **the same
 string** as the `version` that you record here:
@@ -88,12 +95,12 @@ With `github-changes: 'true'`, the Action reads the GitHub API with the workflow
 2. **The commits** from the previous release to this one (GitHub lists at most 250).
 3. **The merged pull requests** of these commits, newest first: each one once, at most 50. They go to the release as
    its changes (title, link and number).
-4. **The findings:** `Sequential-Finding: F-12` trailers in the commit messages, and "Fixes F-12" in pull request titles
+4. **The cases:** `Sequential-Finding: F-12` trailers in the commit messages, and "Fixes F-12" in pull request titles
    and bodies (also fix, fixed, close, closes, closed, resolve, resolves, resolved; lists such as "Fixes F-3, F-4 and
-   F-5"). At most 50.
+   F-5"). At most 50. The API and the agent tools call a case a finding.
 
 The job needs the three read permissions above. Without them, GitHub refuses the calls, and the release is recorded
-without changes and without finding ids from GitHub.
+without changes and without case ids from GitHub.
 
 **When a GitHub read fails** (for example, the previous release is not an ancestor of this commit after a rollback, so
 GitHub cannot compare them), the job prints one line and still records the release:
@@ -108,9 +115,9 @@ When there is no earlier successful deployment, the job reads only this commit, 
 Recorded release 3f2a… (1 finding: F-12; 1 change from 3f2a9c1 alone (no earlier release found))
 ```
 
-### Monorepos: which findings belong to which project
+### Monorepos: which cases belong to which project
 
-A finding number belongs to one Sequential project: `F-12` can exist in each of your projects. When one pull request
+A case number belongs to one Sequential project: `F-12` can exist in each of your projects. When one pull request
 changes several apps, write the project key before the number:
 
 ```
@@ -118,7 +125,7 @@ Fixes web#F-12, app#F-3
 ```
 
 - With `project-key: web`, only `web#…` ids count for this release. An unqualified `F-12` does not count, because it
-  could be another project's finding. To count unqualified ids too, set `findings: all`.
+  could be another project's case. To count unqualified ids too, set `findings: all`.
 - Without `project-key` (one repository, one Sequential project), unqualified ids count, and qualified ids do not.
 - The same rule applies to trailers: `Sequential-Finding: web#F-12`.
 
@@ -159,7 +166,7 @@ You can also read the trailers from a local checkout with `range: v1.2.0..HEAD` 
 | `environment` | no | The environment label in Sequential (lowercase, for example `production`). Default: the project's setting. |
 | `released-at` | no | When the release went live, an ISO date-time with a timezone. Default: now. |
 | `title` | no | A short title (up to 120 characters). |
-| `github-changes` | no | `'true'`: read changes and findings from the GitHub API (see above). |
+| `github-changes` | no | `'true'`: read the changes and the case ids from the GitHub API (see above). |
 | `base` | no | With `github-changes`: `auto` (default) or the previous release's commit sha. |
 | `project-key` | no | The key in "Fixes `<key>`#F-12" for this project (monorepos). |
 | `findings` | no | `all` (unqualified ids count) or `qualified`. Default: `all` without `project-key`, else `qualified`. |
@@ -205,4 +212,4 @@ Sequential cuts a text that is too long, and reports it in `adjusted`. A recorde
 Plain CommonJS with no dependencies (`bin/`, `src/`), so that the backend's Jest suite (`tests/cli/`) can `require()`
 it. `src/cli.cjs` holds all the argument and environment handling as `run(argv, env, deps)`; `bin/sequential-release.cjs`
 gives it the real `fetch`, `git`, files and output. `src/github.cjs` does the GitHub reads, `src/findings.cjs` the
-finding ids and the project scope.
+case ids and the project scope.
