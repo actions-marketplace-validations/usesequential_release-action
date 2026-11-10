@@ -20,7 +20,9 @@ projects of an organisation).
 
 **An agent connection can also record a release.** An agent that is connected through claude.ai or ChatGPT can record
 a release with the `record_release` tool when the person ticks "Also: it records releases" at connect. The box is
-ticked at first. ChatGPT Pro uses only the tools that read, so it cannot record a release. On a connection to all
+ticked at first. Only an owner, an admin or a member sees the box. A viewer never sees it, and the read-only address
+(`/mcp/readonly`) never offers it. A connection made before 10 November 2026 cannot record releases: connect again with
+the box ticked, because a refresh never adds it. ChatGPT Pro uses only the tools that read, so it cannot record a release. On a connection to all
 projects of an organisation that has more than one project, the agent names the project in each `record_release` call. See [Connect claude.ai](https://www.usesequential.com/docs/connect-claude-ai#the-consent-page)
 and [Connect ChatGPT](https://www.usesequential.com/docs/connect-chatgpt).
 
