@@ -1,6 +1,6 @@
 {
     "name": "@usesequential/release-cli",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Record a release in Sequential: its version, its merged pull requests and the cases they fix. CLI and GitHub Action.",
     "keywords": [
         "sequential",
