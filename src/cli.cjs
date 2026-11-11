@@ -164,7 +164,7 @@ async function runRelease(argv, env, deps) {
     if (args.githubChanges) {
         const ctx = githubContext(env, readFile);
         if (!ctx.ok) {
-            stderr.write(`GitHub: ${ctx.message}; the release is recorded without changes or finding ids from GitHub.\n`);
+            stderr.write(`GitHub: ${ctx.message}; the release is recorded without changes or case ids from GitHub.\n`);
         } else {
             try {
                 const read = await releaseChanges(ctx.value, { head: args.sha, base, scope }, fetchImpl);
@@ -175,7 +175,7 @@ async function runRelease(argv, env, deps) {
                     : `; ${changes.length} ${changes.length === 1 ? 'change' : 'changes'} since ${read.base.slice(0, 7)}`;
             } catch (err) {
                 const what = err && err.name === 'GitHubError' ? err.message : 'request failed';
-                stderr.write(`GitHub: could not ${what}; the release is recorded without changes or finding ids from GitHub.\n`);
+                stderr.write(`GitHub: could not ${what}; the release is recorded without changes or case ids from GitHub.\n`);
             }
         }
     }
@@ -207,7 +207,7 @@ async function runRelease(argv, env, deps) {
     }
 
     const ids = findingIds || [];
-    const summary = ids.length === 0 ? 'no findings named' : `${ids.length} ${ids.length === 1 ? 'finding' : 'findings'}: ${ids.join(', ')}`;
+    const summary = ids.length === 0 ? 'no cases named' : `${ids.length} ${ids.length === 1 ? 'case' : 'cases'}: ${ids.join(', ')}`;
     stdout.write(`Recorded release ${args.version} (${summary}${changesNote})\n`);
     return 0;
 }

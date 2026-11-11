@@ -108,13 +108,13 @@ without changes and without case ids from GitHub.
 GitHub cannot compare them), the job prints one line and still records the release:
 
 ```
-GitHub: could not compare bbbbbbb...aaaaaaa (HTTP 404); the release is recorded without changes or finding ids from GitHub.
+GitHub: could not compare bbbbbbb...aaaaaaa (HTTP 404); the release is recorded without changes or case ids from GitHub.
 ```
 
 When there is no earlier successful deployment, the job reads only this commit, and prints for example:
 
 ```
-Recorded release 3f2a… (1 finding: F-12; 1 change from 3f2a9c1 alone (no earlier release found))
+Recorded release 3f2a… (1 case: F-12; 1 change from 3f2a9c1 alone (no earlier release found))
 ```
 
 ### Monorepos: which cases belong to which project
@@ -189,7 +189,7 @@ Environment variables: `SEQUENTIAL_RELEASES_TOKEN` (required, from a secret; see
 is not read: that is `@usesequential/node`'s changes token. With `--github-changes`: `GITHUB_TOKEN`, `GITHUB_REPOSITORY`, and optionally
 `GITHUB_API_URL` (GitHub Enterprise) and `GITHUB_EVENT_PATH` (set by GitHub Actions).
 
-- On success, it prints `Recorded release <version> (<n> findings: F-1, F-4; <m> changes since <base>)` and exits 0.
+- On success, it prints `Recorded release <version> (<n> cases: F-1, F-4; <m> changes since <base>)` and exits 0.
 - When Sequential refuses the release, it prints the reason and exits 1.
 - It never prints a token, and it never follows a redirect (a token is never sent to another address).
 
